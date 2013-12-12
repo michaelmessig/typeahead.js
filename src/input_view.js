@@ -122,6 +122,7 @@ var InputView = (function() {
     },
 
     setInputValue: function(value, silent) {
+
       this.$input.val(value);
 
       !silent && this._compareQueryToInputValue();

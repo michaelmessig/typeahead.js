@@ -177,8 +177,16 @@ var TypeaheadView = (function() {
 
     _setInputValueToSuggestionUnderCursor: function(e) {
       var suggestion = e.data;
+	  var originalValue = suggestion.value;
+
+	  this.eventBus.trigger(
+		'beforeinputchange',
+		suggestion
+	  );
 
       this.inputView.setInputValue(suggestion.value, true);
+
+	  suggestion.value = originalValue;
     },
 
     _openDropdown: function() {
@@ -205,7 +213,17 @@ var TypeaheadView = (function() {
             e.data : this.dropdownView.getSuggestionUnderCursor();
 
       if (suggestion) {
+
+		var originalValue = suggestion.value;
+
+		this.eventBus.trigger(
+			'beforeinputchange',
+			suggestion
+		);
+
         this.inputView.setInputValue(suggestion.value);
+
+		suggestion.value = originalValue;
 
         // if triggered by click, ensure the query input still has focus
         // if triggered by keypress, prevent default browser behavior
@@ -252,7 +270,17 @@ var TypeaheadView = (function() {
 
       if (hint !== '' && query !== hint) {
         suggestion = this.dropdownView.getFirstSuggestion();
+
+		var originalValue = suggestion.value;
+
+		this.eventBus.trigger(
+			'beforeinputchange',
+			suggestion
+		);
+
         this.inputView.setInputValue(suggestion.value);
+
+		suggestion.value = originalValue;
 
         this.eventBus.trigger(
           'autocompleted',

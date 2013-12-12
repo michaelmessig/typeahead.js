@@ -963,7 +963,10 @@
             },
             _setInputValueToSuggestionUnderCursor: function(e) {
                 var suggestion = e.data;
+                var originalValue = suggestion.value;
+                this.eventBus.trigger("beforeinputchange", suggestion);
                 this.inputView.setInputValue(suggestion.value, true);
+                suggestion.value = originalValue;
             },
             _openDropdown: function() {
                 this.dropdownView.open();
@@ -980,7 +983,10 @@
             _handleSelection: function(e) {
                 var byClick = e.type === "suggestionSelected", suggestion = byClick ? e.data : this.dropdownView.getSuggestionUnderCursor();
                 if (suggestion) {
+                    var originalValue = suggestion.value;
+                    this.eventBus.trigger("beforeinputchange", suggestion);
                     this.inputView.setInputValue(suggestion.value);
+                    suggestion.value = originalValue;
                     byClick ? this.inputView.focus() : e.data.preventDefault();
                     byClick && utils.isMsie() ? utils.defer(this.dropdownView.close) : this.dropdownView.close();
                     this.eventBus.trigger("selected", suggestion.datum, suggestion.dataset);
@@ -1012,7 +1018,10 @@
                 hint = this.inputView.getHintValue();
                 if (hint !== "" && query !== hint) {
                     suggestion = this.dropdownView.getFirstSuggestion();
+                    var originalValue = suggestion.value;
+                    this.eventBus.trigger("beforeinputchange", suggestion);
                     this.inputView.setInputValue(suggestion.value);
+                    suggestion.value = originalValue;
                     this.eventBus.trigger("autocompleted", suggestion.datum, suggestion.dataset);
                 }
             },

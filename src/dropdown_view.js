@@ -98,7 +98,6 @@ var DropdownView = (function() {
       // in the case of scrollable overflow
       // make sure the cursor is visible in the menu
       this._ensureVisibility($underCursor);
-
       this.trigger('cursorMoved', extractSuggestion($underCursor));
     },
 
