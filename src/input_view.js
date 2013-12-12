@@ -76,20 +76,23 @@ var InputView = (function() {
       keyName && this.trigger(keyName + 'Keyed', $e);
     },
 
-    _compareQueryToInputValue: function() {
-      var inputValue = this.getInputValue(),
-          isSameQuery = compareQueries(this.query, inputValue),
-          isSameQueryExceptWhitespace = isSameQuery ?
-            this.query.length !== inputValue.length : false;
-
-      if (isSameQueryExceptWhitespace) {
-        this.trigger('whitespaceChanged', { value: this.query });
-      }
-
-      else if (!isSameQuery) {
-        this.trigger('queryChanged', { value: this.query = inputValue });
-      }
-    },
+	_compareQueryToInputValue: function() {
+		var inputValue = this.getInputValue(), isSameQuery = compareQueries(this.query, inputValue), isSameQueryExceptWhitespace = isSameQuery ? this.query.length !== inputValue.length : false;
+		if (isSameQueryExceptWhitespace) {
+			this.trigger("whitespaceChanged", {
+			value: this.query
+			});
+		} else if (!isSameQuery) {
+			this.trigger("queryChanged", {
+			value: this.query = inputValue
+			});
+			if (this.query.length == 0 || inputValue.length == 0) { // added
+			this.trigger("queryZeroLength", {
+				value: this.query
+			});
+			}
+		}
+	},
 
     // public methods
     // --------------
